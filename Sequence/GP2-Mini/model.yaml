@@ -1,0 +1,37 @@
+# This is an example description file for the model
+
+# Version for compatiblity reason
+version: v0.1
+
+# Unique name
+name: GPT2-Mini
+
+metadata:
+  # Category in {Vision, Sequence, Generative}
+  category: sequence
+
+  # Tags
+  tags:
+    - language model
+    - LSTM
+
+  # Markdown description
+  description: |
+    This is the opened sourced version of openai's [GPT2](https://blog.openai.com/better-language-models/) model.
+
+  # Input type {strings,doubles,etc.} and shape info
+  input: 
+    type: strings
+    shape: 
+      - 0
+
+# Build dependency
+build:
+  dockerfile: GPT2Dockerfile
+  requires:
+    - gpt2_container.py
+
+# Deployment Dependency
+deploy:
+  resource:
+    - GPU: true 
