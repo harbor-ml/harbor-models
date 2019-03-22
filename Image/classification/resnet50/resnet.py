@@ -49,7 +49,7 @@ model = tf.keras.applications.resnet50.ResNet50(include_top=True, weights='image
 # label = tf.keras.applications.resnet50.decode_predictions(preds)
 # print(label)
 
-app_name = "tf_resnet"
+app_name = "resnet50-image-classification-keras"
 default_output = "default"
 model_name = "resnet50"
 

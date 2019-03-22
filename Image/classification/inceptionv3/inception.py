@@ -52,7 +52,7 @@ model = tf.keras.applications.inception_v3.InceptionV3(include_top=True, weights
 # label = tf.keras.applications.resnet50.decode_predictions(preds)
 # print(label)
 
-app_name = "tf_inception"
+app_name = "inceptionv3-image-classification-keras"
 default_output = "default"
 model_name = "inceptionv3"
 
