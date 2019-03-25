@@ -51,8 +51,8 @@ def yolo_pred(imgs):
 # Do not be concerned if this cell takes a couple of seconds to run.
 from clipper_admin import DockerContainerManager, ClipperConnection
 clipper_conn = ClipperConnection(DockerContainerManager())
-clipper_conn.stop_all()
-clipper_conn.start_clipper()
+
+clipper_conn.connect()
 
 from clipper_admin.deployers import python as python_deployer
 python_deployer.deploy_python_closure(

@@ -1,0 +1,37 @@
+
+FROM clipper/tf36-container:0.3
+
+RUN mkdir -p /model \
+      && apt-get update -qq \
+      && apt-get install -y -qq libzmq5 libzmq5-dev redis-server libsodium18 build-essential
+
+RUN pip install -q cloudpickle==0.5.* pyzmq==17.0.* prometheus_client==0.1.* \
+    pyyaml==3.12.* jsonschema==2.6.* redis==2.10.* psutil==5.4.* flask==0.12.2 \
+    numpy==1.14.*
+
+COPY clipper_admin /clipper_admin/
+
+RUN cd /clipper_admin \
+                && pip install .
+
+WORKDIR /container
+
+COPY containers/python/__init__.py containers/python/rpc.py /container/
+
+COPY monitoring/metrics_config.yaml /container/
+
+# Copy Over Tensorflow Model
+COPY ssd_mobilenet/frozen_inference_graph.pb /container/ssd_mobilenet/
+
+# Copy over Label Map
+COPY obj_detection_labels.p /container/
+
+ENV CLIPPER_MODEL_PATH=/model
+
+HEALTHCHECK --interval=3s --timeout=3s --retries=1 CMD test -f /model_is_ready.check || exit 1
+
+RUN pip install pillow
+
+COPY ssd_container.py containers/python/container_entry.sh /container/
+
+CMD ["/container/container_entry.sh", "ssd-container", "/container/ssd_container.py"]
