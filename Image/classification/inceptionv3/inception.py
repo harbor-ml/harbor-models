@@ -59,14 +59,11 @@ model_name = "inceptionv3"
 from clipper_admin import ClipperConnection, DockerContainerManager
 from clipper_admin.deployers.tensorflow import deploy_tensorflow_model
 
-clipper_conn = ClipperConnection(DockerContainerManager())
+clipper_conn = ClipperConnection(DockerContainerManager(gpu=True))
 
-clipper_conn.start_clipper()
+clipper_conn.connect()
 
 clipper_conn.register_application(name=app_name, input_type="bytes", default_output=default_output, slo_micros=40000000)
-
-# Connect to an already-running Clipper cluster
-# clipper_conn.connect()
 
 deploy_tensorflow_model(
     clipper_conn,
