@@ -1,5 +1,5 @@
 
-FROM clipper/tf36-container:0.3
+FROM clipper/cuda10-tf36-container:develop
 
 RUN mkdir -p /model \
       && apt-get update -qq \
