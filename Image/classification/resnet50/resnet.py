@@ -10,19 +10,13 @@ IMAGE_FILE = "test.png"
 
 def predict_tf_resnet(sess, imgs):
 	img_tensors = []
-	num_imgs = len(imgs)
-	for i in range(num_imgs):
-		tmp = tempfile.NamedTemporaryFile('wb', delete=False, suffix='.png')
-		tmp.write(io.BytesIO(imgs[i]).getvalue())
-		tmp.close()
+	for img in imgs:
+		image = PIL.Image.open(io.BytesIO(img))
+		image = image.resize((224,224))
 		# Apply preprocessing
-		img = tf.keras.preprocessing.image.load_img(tmp.name, target_size=(224,224))
-		img = tf.keras.preprocessing.image.img_to_array(img)
-		# img = np.expand_dims(img, axis=0)
-		img = tf.keras.applications.resnet50.preprocess_input(img)
-
-		img_tensors.append(img)
-		os.unlink(tmp.name)
+		image = tf.keras.preprocessing.image.img_to_array(image)
+		image = tf.keras.applications.resnet50.preprocess_input(image)
+		img_tensors.append(image)
 
 	preds = sess.run('fc1000/Softmax:0', feed_dict={'img_input:0': img_tensors})
 	labels = tf.keras.applications.resnet50.decode_predictions(preds)

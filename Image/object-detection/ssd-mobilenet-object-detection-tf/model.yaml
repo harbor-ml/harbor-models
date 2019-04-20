@@ -1,0 +1,44 @@
+# This is an example description file for the model
+
+# Version for compatiblity reason
+version: v0.1
+
+# Unique name
+name: GPT2-Mini
+
+metadata:
+  # Category in {Vision, Sequence, Generative}
+  category: Vision
+
+  # Tags
+  tags:
+    - object detection
+    - Vision
+    - single shot
+    - image
+
+  # Markdown description
+  description: |
+    This is the tensorflow research object detection implementation of the Single Shot Detector (SSD) 
+    architecture on top of the mobilenet image classification model. It uses cascadung convolutional filters to predict
+    both bounding boxes and object classifications for a given image. You can find the implementation [here](https://github.com/tensorflow/models/tree/master/research/object_detection),
+    and you can read more about the architecture in [the paper](https://arxiv.org/pdf/1512.02325.pdf).
+  # Input type {strings,doubles,etc.} and shape info
+  input: 
+    type: bytes
+    shape: 
+      - 0
+
+# Build dependency
+build:
+  dockerfile: SSDDockerfile
+  requires:
+    - ssd_container.py
+    - ssd_mobilenet/frozen_inference_graph.pb
+    - obj_detection_labels.p
+    - ssd_deploy.py
+
+# Deployment Dependency
+deploy:
+  resource:
+    - GPU: true 

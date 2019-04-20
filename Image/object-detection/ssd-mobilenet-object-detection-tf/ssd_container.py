@@ -26,8 +26,6 @@ PATH_TO_LABELS = "obj_detection_labels.p"
 
 class TfContainer(rpc.ModelContainerBase):
 	def __init__(self):
-
-
 		self.graph = tf.Graph()
 		with self.graph.as_default():
 			od_graph_def = tf.GraphDef()
@@ -65,10 +63,7 @@ class TfContainer(rpc.ModelContainerBase):
 
 	def predict_bytes(self, inputs):
 		img = inputs[0]
-		tmp = tempfile.NamedTemporaryFile('wb', delete=False, suffix='.png')
-		tmp.write(io.BytesIO(img).getvalue())
-		tmp.close()
-		image = PIL.Image.open(tmp.name)
+		image = PIL.Image.open(io.BytesIO(img))
 		output_dict = self.sess.run(self.tensor_dict,
 				feed_dict={self.image_tensor: np.expand_dims(image, 0)})
 		# all outputs are float32 numpy arrays, so convert types as appropriate
