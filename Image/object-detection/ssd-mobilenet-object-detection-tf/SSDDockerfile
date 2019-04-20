@@ -1,4 +1,3 @@
-
 FROM clipper/cuda10-tf36-container:develop
 
 RUN mkdir -p /model \
@@ -35,3 +34,4 @@ RUN pip install pillow
 COPY ssd_container.py containers/python/container_entry.sh /container/
 
 CMD ["/container/container_entry.sh", "ssd-container", "/container/ssd_container.py"]
+# vim: set filetype=dockerfile:

@@ -1,6 +1,6 @@
 from clipper_admin import DockerContainerManager, ClipperConnection
 
-clipper_conn = ClipperConnection(DockerContainerManager())
+clipper_conn = ClipperConnection(DockerContainerManager(gpu=True))
 
 clipper_conn.connect()
 
@@ -12,9 +12,9 @@ clipper_conn.register_application(
 
 clipper_conn.deploy_model(
 	name="tf-ssd",
-	version=0,
+	version=4,
 	input_type="bytes",
-	image="tf-ssd",
+	image="tfssd:develop",
 	batch_size=1)
 
 clipper_conn.link_model_to_app("ssd-mobilenet-object-detection-tf", "tf-ssd")
