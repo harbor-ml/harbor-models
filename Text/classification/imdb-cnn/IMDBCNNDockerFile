@@ -26,4 +26,9 @@ ENV CLIPPER_MODEL_PATH=/model
 
 HEALTHCHECK --interval=3s --timeout=3s --retries=1 CMD test -f /model_is_ready.check || exit 1
 
-RUN pip install keras
+# RUN pip install keras
+
+COPY imdb_cnn_container.py containers/python/container_entry.sh /container/
+
+CMD ["/container/container_entry.sh", "imdb-cnn-container", "/container/imdb_cnn_container.py"]
+
